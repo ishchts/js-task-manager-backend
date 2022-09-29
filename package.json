@@ -7,7 +7,7 @@
     "node": ">=16.x"
   },
   "scripts": {
-    "start": "fastify start server/plugin.js",
+    "start": "fastify start server/plugin.js -l debug -P",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,19 +21,36 @@
   },
   "homepage": "https://github.com/ishchts/js-web-development-project-lvl4#readme",
   "dependencies": {
+    "@fastify/formbody": "7.3.0",
+    "@fastify/secure-session": "5.2.0",
+    "@fastify/sensible": "5.1.1",
+    "@fastify/static": "6.5.0",
+    "@fastify/view": "7.1.0",
+    "bootstrap": "5.2.1",
     "fastify": "4.6.0",
-    "fastify-cli": "5.4.2"
+    "fastify-cli": "5.4.2",
+    "fastify-error-page": "4.0.0",
+    "fastify-reverse-routes": "3.0.0",
+    "i18next": "21.9.2",
+    "lodash": "4.17.21",
+    "mini-css-extract-plugin": "2.6.1",
+    "pug": "3.0.2",
+    "qs": "6.11.0",
+    "webpack": "5.74.0"
   },
   "devDependencies": {
     "@jest/globals": "29.0.3",
     "@types/jest": "29.0.3",
     "@types/node": "18.7.18",
+    "css-loader": "6.7.1",
     "dotenv": "16.0.2",
     "eslint": "8.23.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jest": "27.0.4",
     "jest": "29.0.3",
-    "jest-cli": "29.0.3"
+    "jest-cli": "29.0.3",
+    "style-loader": "3.3.1",
+    "webpack-cli": "4.10.0"
   }
 }
