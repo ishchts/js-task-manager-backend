@@ -7,8 +7,17 @@
     "node": ">=16.x"
   },
   "scripts": {
-    "start": "fastify start server/plugin.js -l debug -P",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "rm -rf dist",
+    "build": "make db-migrate & webpack",
+    "start": "fastify start server/plugin.js -l debug -P"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/__tests__/helpers/"
+    ],
+    "setupFiles": [
+      "dotenv/config"
+    ]
   },
   "repository": {
     "type": "git",
@@ -22,6 +31,7 @@
   "homepage": "https://github.com/ishchts/js-web-development-project-lvl4#readme",
   "dependencies": {
     "@fastify/formbody": "7.3.0",
+    "@fastify/passport": "2.2.0",
     "@fastify/secure-session": "5.2.0",
     "@fastify/sensible": "5.1.1",
     "@fastify/static": "6.5.0",
@@ -30,12 +40,19 @@
     "fastify": "4.6.0",
     "fastify-cli": "5.4.2",
     "fastify-error-page": "4.0.0",
+    "fastify-method-override": "1.5.9",
+    "fastify-objectionjs": "1.0.0",
     "fastify-reverse-routes": "3.0.0",
     "i18next": "21.9.2",
+    "knex": "2.3.0",
     "lodash": "4.17.21",
     "mini-css-extract-plugin": "2.6.1",
+    "objection": "3.0.1",
+    "objection-unique": "1.2.2",
+    "pg": "8.8.0",
     "pug": "3.0.2",
     "qs": "6.11.0",
+    "sqlite3": "5.1.1",
     "webpack": "5.74.0"
   },
   "devDependencies": {

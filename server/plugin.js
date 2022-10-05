@@ -6,8 +6,11 @@ import fastifySensible from '@fastify/sensible';
 import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
 import fastifyFormbody from '@fastify/formbody';
 import fastifySecureSession from '@fastify/secure-session';
+import fastifyPassport from '@fastify/passport';
 import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
+import fastifyMethodOverride from 'fastify-method-override';
+import fastifyObjectionjs from 'fastify-objectionjs';
 
 import qs from 'qs';
 import Pug from 'pug';
@@ -16,8 +19,13 @@ import ru from './locales/ru.js';
 
 import getHelpers from './helpers/index.js';
 import addRoutes from './routes/index.js';
+import * as knexConfig from '../knexfile.js';
+import models from './models/index.js';
+import FormStrategy from './lib/passport-strategies/form-strategy.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
+
+const mode = process.env.NODE_ENV || 'development';
 
 const setUpViews = (app) => {
   const helpers = getHelpers(app);
@@ -56,16 +64,59 @@ const setupLocalization = async () => {
   });
 };
 
+const addHooks = (app) => {
+  app.addHook('preHandler', async (req, reply) => {
+    reply.locals = {
+      isAuthenticated: () => req.isAuthenticated(),
+    };
+  });
+};
+
 const registerPlugins = (fastify) => {
   fastify.register(fastifySensible);
   // fastify.register(fastifyErrorPage);
   fastify.register(fastifyReverseRoutes);
   fastify.register(fastifyFormbody, { parser: qs.parse });
+
   fastify.register(fastifySecureSession, {
     secret: process.env.SESSION_KEY,
     cookie: {
       path: '/',
     },
+  });
+
+  fastifyPassport.registerUserDeserializer(
+    (user, storeUser) => {
+      console.log('wwwwwwwwwwww');
+      console.log('User', user);
+      console.log('storeUser', storeUser);
+      return fastify.objection.models.user.query().findById(user.id);
+    },
+  );
+  fastifyPassport.registerUserSerializer((user, id) => {
+    console.log('sssssssssss');
+    console.log('user', user);
+    console.log('id', id);
+    return Promise.resolve(user);
+  });
+  fastifyPassport.use('form', new FormStrategy('form', fastify));
+  fastify.register(fastifyPassport.initialize());
+  fastify.register(fastifyPassport.secureSession());
+
+  fastify.decorate('fpass', fastifyPassport);
+
+  fastify.decorate('fauthenticate', (...args) => fastifyPassport.authenticate(
+    'form',
+    {
+      failureRedirect: '/',
+      failureFlash: i18next.t('flash.authError'),
+    },
+  )(...args));
+
+  fastify.register(fastifyMethodOverride);
+  fastify.register(fastifyObjectionjs, {
+    knexConfig: knexConfig[mode],
+    models,
   });
 };
 
@@ -77,6 +128,7 @@ export default async (fastify, options) => {
   setUpViews(fastify);
   setUpStaticAssets(fastify);
   addRoutes(fastify);
+  addHooks(fastify);
 
   fastify.after((err) => {
     console.log('fastify.after fastify.after', err);

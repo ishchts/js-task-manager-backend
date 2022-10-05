@@ -1,3 +1,6 @@
+db-migrate:
+	npx knex migrate:latest
+
 install:
 	npm install
 
