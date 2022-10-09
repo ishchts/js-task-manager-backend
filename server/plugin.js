@@ -68,6 +68,7 @@ const addHooks = (app) => {
   app.addHook('preHandler', async (req, reply) => {
     reply.locals = {
       isAuthenticated: () => req.isAuthenticated(),
+      isAuth: () => req.isAuthenticated(),
     };
   });
 };
@@ -86,19 +87,9 @@ const registerPlugins = (fastify) => {
   });
 
   fastifyPassport.registerUserDeserializer(
-    (user, storeUser) => {
-      console.log('wwwwwwwwwwww');
-      console.log('User', user);
-      console.log('storeUser', storeUser);
-      return fastify.objection.models.user.query().findById(user.id);
-    },
+    (user) => fastify.objection.models.user.query().findById(user.id),
   );
-  fastifyPassport.registerUserSerializer((user, id) => {
-    console.log('sssssssssss');
-    console.log('user', user);
-    console.log('id', id);
-    return Promise.resolve(user);
-  });
+  fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
   fastifyPassport.use('form', new FormStrategy('form', fastify));
   fastify.register(fastifyPassport.initialize());
   fastify.register(fastifyPassport.secureSession());
