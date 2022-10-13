@@ -16,6 +16,9 @@ export const development = {
   },
   useNullAsDefault: true,
   migrations,
+  seeds: {
+    directory: path.join(__dirname, 'server', 'seeds'),
+  },
 };
 
 export const test = {

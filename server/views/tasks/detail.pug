@@ -1,0 +1,23 @@
+extends ../layouts/application.pug
+
+block header
+  div= task.name
+
+block content
+  div(class="row mt-5 p-5 shadow bg-white")
+    div(class="col-12 col-md-8 order-2 order-md-1")
+      div(class="lead fw-normal mb-4")=task.description
+    div(class="col-12 col-md-4 border-start px-3 order-1 order-md-2 mb-3 mb-md-0")
+      div(class="mb-2") labels
+      div(class="d-flex flex-wrap mb-3")
+        span(class="text-muted me-2")= t('views.tasks.creatorId')
+        span= `${task.userCreator.firstName} ${task.userCreator.lastName}`
+      div(class="d-flex flex-wrap mb-3")
+        span(class="text-muted me-2")= t('views.tasks.executorId')
+        span= `${_.get(task, 'userExecutor.firstName', '')} ${_.get(task, 'userExecutor.lastName', '')}`
+      div(class="d-flex flex-wrap mb-3")
+        span(class="text-muted me-2")= t('views.tasks.createdAt')
+        span= formatDate(task.createdAt)
+      div(class="d-flex flex-wrap") 
+        a.btn.btn-primary.me-1(href=`/tasks/${task.id}/edit`)= t('views.tasks.editBtn')
+        +buttonTo(`/tasks/${task.id}/delete`, 'delete')(class="btn btn-danger" value=t('views.tasks.deleteBtn'))

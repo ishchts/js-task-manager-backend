@@ -41,6 +41,21 @@ export default {
           success: 'Статус успешно удален',
         },
       },
+      tasks: {
+        create: {
+          sucess: 'Задача успешно создана',
+          error: 'Не удалось создать задачу',
+        },
+        edit: {
+          success: 'Задача успешно изменена',
+          error: 'Не удалось изменить задачу',
+        },
+        delete: {
+          success: 'Задача успешно удалена',
+          error: 'Не удалось удалить задачу',
+          permission: 'Задачу может удалить только её автор',
+        },
+      },
     },
     layouts: {
       application: {
@@ -49,6 +64,7 @@ export default {
         signUp: 'Регистрация',
         signOut: 'Выход',
         statuses: 'Статусы',
+        tasks: 'Задачи',
       },
     },
     views: {
@@ -92,6 +108,29 @@ export default {
         },
         new: {
           submit: 'Создать',
+        },
+      },
+      tasks: {
+        title: 'Задачи',
+        createBtn: 'Создать задачу',
+        id: 'ID',
+        name: 'Наименование',
+        statusId: 'Статус',
+        creatorId: 'Автор',
+        executorId: 'Исполнитель',
+        createdAt: 'Дата создания',
+        actions: '',
+        editBtn: 'Изменить',
+        deleteBtn: 'Удалить',
+        create: {
+          title: 'Создание задачи',
+        },
+        new: {
+          submit: 'Создать',
+        },
+        edit: {
+          title: 'Изменение задачи',
+          submit: 'Изменить',
         },
       },
     },
