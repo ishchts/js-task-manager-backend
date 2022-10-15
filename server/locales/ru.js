@@ -56,6 +56,20 @@ export default {
           permission: 'Задачу может удалить только её автор',
         },
       },
+      labels: {
+        create: {
+          error: 'Не удалось создать метку',
+          success: 'Метка успешно создана',
+        },
+        edit: {
+          error: 'Не удалось обновить метку',
+          success: 'Метка успешно обновлена',
+        },
+        delete: {
+          error: 'Не удалось удалить метку',
+          success: 'Метка успешно удалена',
+        },
+      },
     },
     layouts: {
       application: {
@@ -65,6 +79,7 @@ export default {
         signOut: 'Выход',
         statuses: 'Статусы',
         tasks: 'Задачи',
+        labels: 'Метки',
       },
     },
     views: {
@@ -130,6 +145,25 @@ export default {
         },
         edit: {
           title: 'Изменение задачи',
+          submit: 'Изменить',
+        },
+      },
+      labels: {
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        title: 'Метки',
+        btn: {
+          create: 'Создать метку',
+          edit: 'Изменить',
+          delete: 'Удалить',
+        },
+        new: {
+          title: 'Создание метки',
+          submit: 'Создать',
+        },
+        edit: {
+          title: 'Редатирование метки',
           submit: 'Изменить',
         },
       },
