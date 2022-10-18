@@ -1,5 +1,3 @@
-
-
 // @ts-check
 
 import {
@@ -13,7 +11,7 @@ describe('requests', () => {
   let app;
 
   beforeAll(async () => {
-    app = fastify({ logger: { prettyPrint: true } });
+    app = fastify();
     await init(app);
   });
 

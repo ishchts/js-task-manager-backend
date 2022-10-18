@@ -125,6 +125,11 @@ export default {
           submit: 'Создать',
         },
       },
+      task: {
+        filter: {
+          onlyMyTasks: 'Только мои задачи',
+        },
+      },
       tasks: {
         title: 'Задачи',
         createBtn: 'Создать задачу',
@@ -142,6 +147,7 @@ export default {
         },
         new: {
           submit: 'Создать',
+          show: 'Показать',
         },
         edit: {
           title: 'Изменение задачи',

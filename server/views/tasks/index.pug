@@ -5,7 +5,20 @@ block header
   a.btn.btn-primary.btn-lg(href="/tasks/new")= t('views.tasks.createBtn')
 
 block content
-  table.table.table-striped
+  .card
+    card-body.p-4.bg-light
+      +formFor()(action='/tasks' method='get')
+        .row
+          .col
+            +filterSelect(filters, statuses, 'statusId')
+          .col
+            +filterSelect(filters, users, 'executorId')
+          .col
+            +filterSelect(filters, labels, 'labelId')
+        +filterCheckBox(filters, 'task', 'onlyMyTasks')
+        +submit()(value=t('views.tasks.new.show'))
+
+  table.table.table-striped.mt-5.bg-white
     thead
       tr
         th= t('views.tasks.id')

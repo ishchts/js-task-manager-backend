@@ -61,6 +61,25 @@ mixin select(entity, options, propertyName, errors = {},)
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
+mixin filterSelect(entity, options, propertyName)
+  - classLine = 'form-control'
+  - inputId = propertyName
+  .mb-3
+    label(
+      for= inputId
+    )= propertyName
+    select(
+      id= inputId
+      name=propertyName
+      class=classLine
+    )&attributes(attributes)
+      option()
+      each option in options
+        - isSelected = String(option.id) === String(_.get(entity, propertyName, ''))
+        if option.name
+          option(value=`${option.id}` selected=isSelected)= option.name
+        if option.firstName && option.lastName
+          option(value=`${option.id}` selected=isSelected)= `${option.firstName} ${option.lastName}`
 
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
@@ -69,3 +88,17 @@ mixin buttonTo(action, method)
   form(action=action, method="post")
     input(name="_method" type="hidden" value=method)
     input(type='submit')&attributes(attributes)
+
+mixin filterCheckBox(entity, entityName, propertyName)
+  - inputId = getInputId(propertyName)
+  - isChecked = Boolean(_.get(entity, propertyName, ''))
+  .mb-3.form-check
+    input.form-check-input(
+      id= inputId
+      type='checkbox'
+      name= propertyName
+      checked= isChecked
+    )
+    label.form-check-label(
+      for= inputId
+    )= t(`views.${entityName}.filter.${propertyName}`)

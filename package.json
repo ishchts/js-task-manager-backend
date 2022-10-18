@@ -7,6 +7,7 @@
     "node": ">=16.x"
   },
   "scripts": {
+    "test": "jest --verbose --runInBand",
     "prebuild": "rm -rf dist",
     "build": "make db-migrate & webpack",
     "start": "fastify start server/plugin.js -l debug -P"

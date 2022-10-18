@@ -1,10 +1,13 @@
 const { Model } = require('objection');
+const objectionUnique = require('objection-unique');
 const BaseModel = require('./base-model.cjs');
 const User = require('./user.cjs');
 const TaskStatus = require('./task-status.cjs');
 const Label = require('./labels.cjs');
 
-module.exports = class Tasks extends BaseModel {
+const unique = objectionUnique({ fields: ['name'] });
+
+module.exports = class Tasks extends unique(BaseModel) {
   static get tableName() {
     return 'tasks';
   }
@@ -69,4 +72,11 @@ module.exports = class Tasks extends BaseModel {
       },
     };
   }
+
+  static modifiers = {
+    filterBy(query, columnName, value) {
+      const { ref } = Tasks;
+      query.where(ref(`${columnName}`), value);
+    },
+  };
 };
