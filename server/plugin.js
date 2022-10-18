@@ -11,6 +11,7 @@ import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
 import fastifyMethodOverride from 'fastify-method-override';
 import fastifyObjectionjs from 'fastify-objectionjs';
+import Rollbar from 'rollbar';
 
 import qs from 'qs';
 import Pug from 'pug';
@@ -111,8 +112,24 @@ const registerPlugins = (fastify) => {
   });
 };
 
+const setupErrorHandler = (app) => {
+  app.setErrorHandler(async (err, req, reply) => {
+    const rollbar = new Rollbar({
+      accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+      captureUncaught: true,
+      captureUnhandledRejections: true,
+    });
+
+    rollbar.error(err, req);
+    rollbar.log('Hello world!');
+    console.log('asdasdasd');
+    reply.send(err);
+  });
+};
+
 // eslint-disable-next-line no-unused-vars
 export default async (fastify, options) => {
+  setupErrorHandler(fastify);
   registerPlugins(fastify);
 
   await setupLocalization();
