@@ -52,12 +52,20 @@ mixin select(entity, options, propertyName, errors = {},)
       class=classLine
     )&attributes(attributes)
       option()
-      each option in options
-        - isSelected = String(option.id) === String(_.get(entity, propertyName, ''))
-        if option.name
-          option(value=`${option.id}` selected=isSelected)= option.name
-        if option.firstName && option.lastName
-          option(value=`${option.id}` selected=isSelected)= `${option.firstName} ${option.lastName}`
+      if (Array.isArray(entity))
+        each option in options
+          - isSelected = entity.map(el => el.id).includes(Number(option.id))
+          if option.name
+            option(value=`${option.id}` selected=isSelected)= option.name
+          if option.firstName && option.lastName
+            option(value=`${option.id}` selected=isSelected)= `${option.firstName} ${option.lastName}`
+      else  
+        each option in options
+          - isSelected = String(option.id) === String(_.get(entity, propertyName, ''))
+          if option.name
+            option(value=`${option.id}` selected=isSelected)= option.name
+          if option.firstName && option.lastName
+            option(value=`${option.id}` selected=isSelected)= `${option.firstName} ${option.lastName}`
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 

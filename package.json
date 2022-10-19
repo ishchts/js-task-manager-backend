@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "task manager",
   "type": "module",
+  "main": "server/plugin.js",
   "engines": {
     "node": ">=16.x"
   },
@@ -53,6 +54,7 @@
     "pg": "8.8.0",
     "pug": "3.0.2",
     "qs": "6.11.0",
+    "rollbar": "2.25.2",
     "sqlite3": "5.1.1",
     "webpack": "5.74.0"
   },

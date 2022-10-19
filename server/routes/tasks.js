@@ -35,7 +35,7 @@ export default (app) => {
           }
 
           if (labelId) {
-            trxTasks.modify('filterBy', 'labelId', Number(labelId));
+            trxTasks.modify('filterBy', 'tasksLabels.id', Number(labelId));
           }
 
           if (onlyMyTasks) {
@@ -161,9 +161,13 @@ export default (app) => {
 
       const statuses = await app.objection.models.taskStatus.query();
       const users = await app.objection.models.user.query();
-      const task = await app.objection.models.tasks.query().findById(req.params.id);
+      const labels = await app.objection.models.label.query();
+      const task = await app.objection.models.tasks
+        .query().findById(req.params.id).withGraphJoined('[tasksLabels]');
 
-      reply.render('tasks/edit', { task, statuses, users });
+      reply.render('tasks/edit', {
+        task, statuses, users, labels,
+      });
       return reply;
     })
     .post('/tasks/:id/edit', async (req, reply) => {
@@ -175,26 +179,42 @@ export default (app) => {
       const { id: taskId } = req.params;
 
       const task = new app.objection.models.tasks();
+      const {
+        executorId,
+        statusId,
+        labels: labelIds,
+        ...restBodyData
+      } = req.body.data;
+
+      const tasksLabels = await app.objection.models.label
+        .query().findByIds([...labelIds]);
+
       const updatedTask = {
-        ...req.body.data,
+        ...restBodyData,
         id: Number(taskId),
         creatorId: req.user.id,
-        executorId: Number(req.body.data.executorId) || '',
-        statusId: Number(req.body.data.statusId),
+        executorId: Number(executorId) || '',
+        statusId: Number(statusId),
+        tasksLabels: tasksLabels.map((taskLabel) => ({ id: taskLabel.id })),
       };
       task.$set(updatedTask);
-
       const statuses = await app.objection.models.taskStatus.query();
       const users = await app.objection.models.user.query();
+      const labels = await app.objection.models.label.query();
 
       try {
-        await app.objection.models.tasks.query().upsertGraph(updatedTask);
+        await app.objection.models.tasks.transaction(async (trx) => {
+          await app.objection.models.tasks
+            .query(trx).upsertGraph(updatedTask, {
+              relate: true, unrelate: true, noDelete: true,
+            });
+        });
         req.flash('info', i18next.t('flash.tasks.edit.success'));
         reply.redirect('/tasks');
       } catch (err) {
         req.flash('error', i18next.t('flash.tasks.edit.error'));
         reply.render('tasks/edit', {
-          task, statuses, users, errors: err.data,
+          task, statuses, users, labels, errors: err.data,
         });
       }
 
