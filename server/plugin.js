@@ -1,14 +1,14 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-import fastifySensible from '@fastify/sensible';
-// import fastifyErrorPage from 'fastify-error-page';
+import fastifySensible from 'fastify-sensible';
+import fastifyErrorPage from 'fastify-error-page';
 import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
-import fastifyFormbody from '@fastify/formbody';
-import fastifySecureSession from '@fastify/secure-session';
-import fastifyPassport from '@fastify/passport';
-import fastifyView from '@fastify/view';
-import fastifyStatic from '@fastify/static';
+import fastifyFormbody from 'fastify-formbody';
+import fastifySecureSession from 'fastify-secure-session';
+import fastifyPassport from 'fastify-passport';
+import fastifyView from 'point-of-view';
+import fastifyStatic from 'fastify-static';
 import fastifyMethodOverride from 'fastify-method-override';
 import fastifyObjectionjs from 'fastify-objectionjs';
 import Rollbar from 'rollbar';
@@ -76,7 +76,7 @@ const addHooks = (app) => {
 
 const registerPlugins = (fastify) => {
   fastify.register(fastifySensible);
-  // fastify.register(fastifyErrorPage);
+  fastify.register(fastifyErrorPage);
   fastify.register(fastifyReverseRoutes);
   fastify.register(fastifyFormbody, { parser: qs.parse });
 
