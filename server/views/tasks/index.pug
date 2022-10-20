@@ -10,11 +10,11 @@ block content
       +formFor()(action='/tasks' method='get')
         .row
           .col
-            +filterSelect(filters, statuses, 'statusId')
+            +filterSelect(filters, statuses, 'status', 'tasks')
           .col
-            +filterSelect(filters, users, 'executorId')
+            +filterSelect(filters, users, 'executor', 'tasks')
           .col
-            +filterSelect(filters, labels, 'labelId')
+            +filterSelect(filters, labels, 'label', 'tasks')
         +filterCheckBox(filters, 'task', 'onlyMyTasks')
         +submit()(value=t('views.tasks.new.show'))
 
@@ -23,9 +23,9 @@ block content
       tr
         th= t('views.tasks.id')
         th= t('views.tasks.name')
-        th= t('views.tasks.statusId')
-        th= t('views.tasks.creatorId')
-        th= t('views.tasks.executorId')
+        th= t('views.tasks.status')
+        th= t('views.tasks.creator')
+        th= t('views.tasks.executor')
         th= t('views.tasks.createdAt')
         th= t('views.tasks.actions')
     tbody

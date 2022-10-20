@@ -24,23 +24,25 @@ export default (app) => {
       }
       const person = await app.objection.models.user.query().findById(req.params.id);
 
-      if (req.session.passport.id !== person.id) {
-        req.flash('error', i18next.t('flash.users.edit.permissionError'));
+      if (req.user.id !== person.id) {
+        req.flash('error', i18next.t('flash.user.edit.permissionError'));
         reply.redirect('/users');
         return reply;
       }
+      const user = new app.objection.models.user();
+      user.$set({
+        id: person.id,
+        firstName: person.firstName,
+        lastName: person.lastName,
+        email: person.email,
+      });
 
       reply.render('users/edit', {
-        user: {
-          id: person.id,
-          firstName: person.firstName,
-          lastName: person.lastName,
-          email: person.email,
-        },
+        user,
       });
       return reply;
     })
-    .post('/users/:id/delete', { name: 'usersDelete' }, async (req, reply) => {
+    .delete('/users/:id/delete', { name: 'usersDelete' }, async (req, reply) => {
       if (!reply.locals.isAuthenticated()) {
         req.flash('error', i18next.t('flash.users.edit.error'));
         reply.redirect('/');
@@ -49,7 +51,7 @@ export default (app) => {
       const { objection: { models } } = app;
       const person = await models.user.query().findById(req.params.id);
 
-      if (req.session.passport.id !== person.id) {
+      if (req.user.id !== person.id) {
         req.flash('error', i18next.t('flash.users.edit.permissionError'));
         reply.redirect('/users');
         return reply;

@@ -24,9 +24,11 @@ module.exports = class Tasks extends unique(BaseModel) {
         },
         statusId: {
           type: 'integer',
+          minimum: 1,
         },
         creatorId: {
           type: 'integer',
+          minimum: 1,
         },
       },
     };

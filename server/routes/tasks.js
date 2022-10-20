@@ -10,9 +10,9 @@ export default (app) => {
       }
 
       const {
-        statusId,
-        executorId,
-        labelId,
+        status,
+        executor,
+        label,
         onlyMyTasks,
       } = req.query;
 
@@ -26,16 +26,16 @@ export default (app) => {
             .query(trx)
             .withGraphJoined('[status, userCreator, userExecutor, tasksLabels]');
 
-          if (statusId) {
-            trxTasks.modify('filterBy', 'statusId', Number(statusId));
+          if (status) {
+            trxTasks.modify('filterBy', 'statusId', Number(status));
           }
 
-          if (executorId) {
-            trxTasks.modify('filterBy', 'executorId', Number(executorId));
+          if (executor) {
+            trxTasks.modify('filterBy', 'executorId', Number(executor));
           }
 
-          if (labelId) {
-            trxTasks.modify('filterBy', 'tasksLabels.id', Number(labelId));
+          if (label) {
+            trxTasks.modify('filterBy', 'tasksLabels.id', Number(label));
           }
 
           if (onlyMyTasks) {
@@ -50,15 +50,13 @@ export default (app) => {
           users,
           labels,
           filters: {
-            statusId,
-            executorId,
-            labelId,
+            status,
+            executor,
+            label,
             onlyMyTasks,
           },
         });
       } catch (e) {
-        console.log('asdeee333', e);
-        console.log('asdeee222', e.data);
         reply.redirect('/');
       }
 
@@ -71,11 +69,14 @@ export default (app) => {
         return reply;
       }
 
+      const tasks = new app.objection.models.tasks();
       const statuses = await app.objection.models.taskStatus.query();
       const users = await app.objection.models.user.query();
       const labels = await app.objection.models.label.query();
 
-      reply.render('tasks/new', { statuses, users, labels });
+      reply.render('tasks/new', {
+        tasks, statuses, users, labels,
+      });
       return reply;
     })
     .post('/tasks', async (req, reply) => {
@@ -88,6 +89,7 @@ export default (app) => {
       const statuses = await app.objection.models.taskStatus.query();
       const users = await app.objection.models.user.query();
       const labelList = await app.objection.models.label.query();
+      const tasks = new app.objection.models.tasks();
 
       const {
         body: {
@@ -97,10 +99,11 @@ export default (app) => {
           },
         },
       } = req;
-      const tasks = { name };
 
       const labelsFound = await app.objection.models.label
         .query().findByIds(labelIds ?? []);
+
+      tasks.$set({ ...req.body.data, labels: labelsFound });
 
       const creatorId = req.user.id;
       const newTask = {
@@ -122,15 +125,12 @@ export default (app) => {
         reply.redirect('/tasks');
       } catch (err) {
         const { data } = err;
-
         req.flash('error', i18next.t('flash.tasks.create.error'));
         reply.render('tasks/new', {
           statuses,
           users,
           labels: labelList,
           errors: data,
-          statusId,
-          executorId,
           tasks,
         });
       }
@@ -220,7 +220,7 @@ export default (app) => {
 
       return reply;
     })
-    .post('/tasks/:id/delete', async (req, reply) => {
+    .delete('/tasks/:id/delete', async (req, reply) => {
       if (!reply.locals.isAuth()) {
         req.flash('error', i18next.t('flash.authError'));
         reply.redirect('/');

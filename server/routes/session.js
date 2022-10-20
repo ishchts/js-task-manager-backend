@@ -5,7 +5,7 @@ import i18next from 'i18next';
 export default (app) => {
   app
     .get('/session/new', { name: 'newSession' }, (req, reply) => {
-      const signInForm = {};
+      const signInForm = new app.objection.models.user();
       reply.render('session/new', { signInForm });
     })
     .post('/session', { name: 'session' }, app.fpass.authenticate('form', async (req, reply, err, user) => {
@@ -27,7 +27,7 @@ export default (app) => {
       reply.redirect('/');
       return reply;
     }))
-    .post('/session-logout', (req, reply) => {
+    .delete('/session-logout', (req, reply) => {
       req.logOut();
       req.flash('info', i18next.t('flash.session.delete.success'));
       reply.redirect('/');

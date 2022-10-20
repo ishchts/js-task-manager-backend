@@ -23,7 +23,7 @@ export default {
           success: 'Пользователь успешно изменён',
         },
         delete: {
-          success: 'Пользователь успешно удален',
+          success: 'Пользователь успешно удалён',
         },
       },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
@@ -34,11 +34,11 @@ export default {
         },
         edit: {
           error: 'Не удалось обновить статус',
-          success: 'Статус успешно обновлен',
+          success: 'Статус успешно изменён',
         },
         delete: {
           error: 'Не удалось удалить статус',
-          success: 'Статус успешно удален',
+          success: 'Статус успешно удалён',
         },
       },
       tasks: {
@@ -63,7 +63,7 @@ export default {
         },
         edit: {
           error: 'Не удалось обновить метку',
-          success: 'Метка успешно обновлена',
+          success: 'Метка успешно изменена',
         },
         delete: {
           error: 'Не удалось удалить метку',
@@ -89,10 +89,13 @@ export default {
           submit: 'Войти',
         },
       },
-      users: {
+      user: {
         id: 'ID',
+        firstName: 'Имя',
+        lastName: 'Фамилия',
         fullName: 'Полное имя',
         email: 'Email',
+        password: 'Пароль',
         createdAt: 'Дата создания',
         actions: 'Действия',
         editBtn: 'Изменить',
@@ -115,6 +118,7 @@ export default {
       statuses: {
         title: 'Статусы',
         createBtn: 'Создать статус',
+        editBtn: 'Изменить',
         id: 'ID',
         name: 'Наименование',
         createdAt: 'Дата создания',
@@ -135,13 +139,18 @@ export default {
         createBtn: 'Создать задачу',
         id: 'ID',
         name: 'Наименование',
+        status: 'Статус',
         statusId: 'Статус',
-        creatorId: 'Автор',
+        creator: 'Автор',
+        executor: 'Исполнитель',
         executorId: 'Исполнитель',
         createdAt: 'Дата создания',
         actions: '',
         editBtn: 'Изменить',
         deleteBtn: 'Удалить',
+        description: 'Описание',
+        labels: 'Метки',
+        label: 'Метка',
         create: {
           title: 'Создание задачи',
         },
@@ -154,7 +163,7 @@ export default {
           submit: 'Изменить',
         },
       },
-      labels: {
+      label: {
         id: 'ID',
         name: 'Наименование',
         createdAt: 'Дата создания',
@@ -172,6 +181,9 @@ export default {
           title: 'Редатирование метки',
           submit: 'Изменить',
         },
+      },
+      taskStatus: {
+        name: 'Наименование',
       },
     },
   },

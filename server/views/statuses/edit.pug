@@ -6,4 +6,4 @@ block header
 block content
   +formFor()(action=`/statuses/${taskStatus.id}/edit` method='post')
     +input(taskStatus, 'name', errors)(type="text")
-    +submit(taskStatus)(value=t('views.statuses.new.submit'))
+    +submit(taskStatus)(value=t('views.statuses.editBtn'))

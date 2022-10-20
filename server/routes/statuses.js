@@ -21,7 +21,8 @@ export default (app) => {
         return reply;
       }
 
-      reply.render('statuses/new');
+      const taskStatus = new app.objection.models.taskStatus();
+      reply.render('statuses/new', { taskStatus });
       return reply;
     })
     .get('/statuses/:id/edit', async (req, reply) => {
@@ -41,6 +42,8 @@ export default (app) => {
         reply.redirect('/');
         return reply;
       }
+      const taskStatus = new app.objection.models.taskStatus();
+      taskStatus.$set(req.body.data);
 
       try {
         const validStatus = await app.objection.models.taskStatus.fromJson(req.body.data);
@@ -49,7 +52,7 @@ export default (app) => {
         reply.redirect('/statuses');
       } catch ({ data }) {
         req.flash('error', i18next.t('flash.taskStatus.create.error'));
-        reply.render('/statuses/new', { errors: data });
+        reply.render('/statuses/new', { taskStatus, errors: data });
       }
       return reply;
     })
@@ -72,7 +75,7 @@ export default (app) => {
       }
       return reply;
     })
-    .post('/statuses/:id/delete', async (req, reply) => {
+    .delete('/statuses/:id/delete', async (req, reply) => {
       if (!reply.locals.isAuth()) {
         req.flash('error', i18next.t('flash.authError'));
         reply.redirect('/');

@@ -20,8 +20,8 @@ export default (app) => {
         reply.redirect('/');
         return reply;
       }
-
-      reply.render('labels/new');
+      const label = new app.objection.models.label();
+      reply.render('labels/new', { label });
       return reply;
     })
     .post('/labels', async (req, reply) => {
@@ -78,7 +78,7 @@ export default (app) => {
 
       return reply;
     })
-    .post('/labels/:id/delete', async (req, reply) => {
+    .delete('/labels/:id/delete', async (req, reply) => {
       if (!reply.locals.isAuth()) {
         req.flash('error', i18next.t('flash.authError'));
         reply.redirect('/');

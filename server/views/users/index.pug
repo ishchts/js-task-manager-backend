@@ -4,11 +4,11 @@ block content
   table.table.table-striped
     thead
       tr
-        th= t('views.users.id')
-        th= t('views.users.fullName')
-        th= t('views.users.email')
-        th= t('views.users.createdAt')
-        th= t('views.users.actions')
+        th= t('views.user.id')
+        th= t('views.user.fullName')
+        th= t('views.user.email')
+        th= t('views.user.createdAt')
+        th= t('views.user.actions')
     tbody
       each user in users
         tr
@@ -18,5 +18,5 @@ block content
           td= formatDate(user.createdAt)
           td
             div.d-flex.flex-wrap
-              a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('views.users.editBtn')
-              +buttonTo(`/users/${user.id}/delete`, 'delete')(class="btn btn-danger" value=t('views.users.deleteBtn'))
+              a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('views.user.editBtn')
+              +buttonTo(`/users/${user.id}/delete`, 'delete')(class="btn btn-danger" value=t('views.user.deleteBtn'))

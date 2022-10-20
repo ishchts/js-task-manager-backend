@@ -1,3 +1,4 @@
+- const getEntityName = (entity) => _.camelCase(entity.constructor.name)
 - const getInputName = (property) => `data[${property}]`
 - const getInputId = (property) => `data_${property}`
 
@@ -9,10 +10,11 @@ mixin input(entity, propertyName, errors = {})
   - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
   - inputId = getInputId(propertyName)
+  - entityName = getEntityName(entity)
   .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
-    )= propertyName
+    )= t(`views.${entityName}.${propertyName}`)
     input(
       id= inputId
       name=getInputName(propertyName)
@@ -29,7 +31,7 @@ mixin textarea(entity, propertyName, errors = {})
   .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
-    )= propertyName
+    )= t(`views.${entityName}.${propertyName}`)
     textarea(
       id= inputId
       name=getInputName(propertyName)
@@ -45,7 +47,7 @@ mixin select(entity, options, propertyName, errors = {},)
   .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
-    )= propertyName
+    )= t(`views.${entityName}.${propertyName}`)
     select(
       id= inputId
       name=getInputName(propertyName)
@@ -69,13 +71,13 @@ mixin select(entity, options, propertyName, errors = {},)
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
-mixin filterSelect(entity, options, propertyName)
+mixin filterSelect(entity, options, propertyName, entityName)
   - classLine = 'form-control'
-  - inputId = propertyName
+  - inputId = getInputId(propertyName)
   .mb-3
     label(
-      for= inputId
-    )= propertyName
+      for= inp  utId
+    )= t(`views.${entityName}.${propertyName}`)
     select(
       id= inputId
       name=propertyName
