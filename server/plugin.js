@@ -143,4 +143,6 @@ export default async (fastify, options) => {
   fastify.ready((err) => {
     console.log('fastify.ready fastify.ready fastify.ready', err);
   });
+
+  return fastify;
 };

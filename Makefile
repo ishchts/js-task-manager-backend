@@ -1,3 +1,8 @@
+setup: prepare install db-migrate
+
+prepare:
+	cp -n .env.example .env || true
+	
 db-migrate:
 	npx knex migrate:latest
 
